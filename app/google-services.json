@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "229362814504",
+    "project_id": "my-note-plus-c1e09",
+    "storage_bucket": "my-note-plus-c1e09.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:229362814504:android:c611dd0eba3235c0e72f1d",
+        "android_client_info": {
+          "package_name": "com.headtech.mynoteplus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPD3Bm14WHrbKxL8ianEEQRq7_h_fnkUQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -18,6 +18,9 @@
 - 🔔 **Peringatan Update Versi**  
   Notifikasi di layar utama saat ada versi terbaru (opsional, bisa ditutup sementara per sesi).
 
+- 🚧 **Maintenance Mode**  
+  Saat aplikasi dalam pemeliharaan, pengguna akan melihat layar khusus dengan informasi dari Firebase *tanpa perlu update aplikasi.*
+
 - 🔄 **Data Real-Time dengan Firestore**  
   Semua catatan tersimpan langsung di Firebase Firestore dan tersinkron otomatis.
 
@@ -40,7 +43,6 @@
 ## 📷 Tampilan (Screenshots)
 
 > *(Screenshots akan ditambahkan di sini)*  
-> Gunakan format seperti berikut saat tersedia:  
 > `Segera Hadir`
 
 ---
@@ -49,9 +51,8 @@
 
 Kamu bisa mencoba atau mendownload aplikasi MyNotePlus melalui tautan berikut:
 
-- 🔗
-- 📦 [Download APK](Comingsoon)
-> *Pastikan selalu menggunakan versi terbaru untuk mendapatkan fitur dan perbaikan bug terbaru.*
+- 📦 **[Download APK (Release)](https://github.com/Catkoo/MyNotePlus/tree/main/app/release)**
+  > *Pastikan selalu menggunakan versi terbaru untuk mendapatkan fitur dan perbaikan bug terbaru.*
 
 ---
 
@@ -68,10 +69,11 @@ Kamu bisa mencoba atau mendownload aplikasi MyNotePlus melalui tautan berikut:
 
 1. Clone repository:
    ```bash
-   git clone https://github.com/username/MyNotePlus.git
+   git clone https://github.com/Catkoo/MyNotePlus.git
    cd MyNotePlus
+
    ```
 
-👤 Author
-Richard Khoo
-- [Website](https://richard-khoo.vercel.app)
+## 👤 Author
+- **Richard Khoo**
+- **[Website](https://richard-khoo.vercel.app)**

@@ -1,6 +1,5 @@
 package com.headtech.mynoteplus.screens
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -22,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 @Composable
@@ -33,24 +33,43 @@ fun HomeScreen(
     var selectedBottomTab by remember { mutableStateOf(0) }
     var selectedNoteTab by remember { mutableStateOf(0) }
 
-    val context = LocalContext.current
-    val prefs = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
-
     val currentVersion = "1.0"
+
+    // State Firebase config
+    var isMaintenance by remember { mutableStateOf(false) }
+    var maintenanceMessage by remember { mutableStateOf("") }
     var showBanner by remember { mutableStateOf(false) }
     var updateUrl by remember { mutableStateOf("") }
+    var updateChangelog by remember { mutableStateOf("") }
 
+    // Ambil data dari Firebase
     LaunchedEffect(Unit) {
-        val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
+        val db = FirebaseFirestore.getInstance()
         db.collection("app_config").document("status").get().addOnSuccessListener { doc ->
             val latestVersion = doc.getString("latest_version") ?: currentVersion
             val url = doc.getString("update_url") ?: ""
+            val changelog = doc.getString("update_changelog") ?: ""
+            val isMaint = doc.getBoolean("maintenance_mode") ?: false
+            val maintMessage = doc.getString("maintenance_message") ?: "Aplikasi sedang dalam perbaikan."
+
+            if (isMaint) {
+                isMaintenance = true
+                maintenanceMessage = maintMessage
+                return@addOnSuccessListener
+            }
 
             if (latestVersion != currentVersion) {
                 showBanner = true
                 updateUrl = url
+                updateChangelog = changelog
             }
         }
+    }
+
+    // Tampilkan Maintenance kalau aktif
+    if (isMaintenance) {
+        MaintenanceScreen(maintenanceMessage)
+        return
     }
 
     Scaffold(
@@ -103,16 +122,15 @@ fun HomeScreen(
                     }
                 }
 
-                1 -> {
-                    ProfileScreen(navController = navController)
-                }
+                1 -> ProfileScreen(navController = navController)
             }
         }
 
         if (showBanner) {
             Banner(
-                message = "📢 Versi terbaru tersedia. Tap untuk update!",
+                message = "📢 Versi terbaru tersedia!",
                 url = updateUrl,
+                changelog = updateChangelog,
                 onClose = { showBanner = false }
             )
         }
@@ -149,8 +167,9 @@ fun PersonalNotesContent(navController: NavController, noteViewModel: NoteViewMo
         }
     }
 }
+
 @Composable
-fun Banner(message: String, url: String, onClose: () -> Unit) {
+fun Banner(message: String, url: String, changelog: String, onClose: () -> Unit) {
     val context = LocalContext.current
 
     Box(
@@ -164,15 +183,17 @@ fun Banner(message: String, url: String, onClose: () -> Unit) {
             elevation = CardDefaults.cardElevation(8.dp),
             modifier = Modifier
                 .fillMaxWidth(0.9f)
-                .wrapContentHeight()
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = message,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.titleMedium
                 )
-
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = changelog,
+                    style = MaterialTheme.typography.bodySmall
+                )
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Row(
@@ -196,7 +217,39 @@ fun Banner(message: String, url: String, onClose: () -> Unit) {
     }
 }
 
-
+@Composable
+fun MaintenanceScreen(message: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF212121)),
+        contentAlignment = Alignment.Center
+    ) {
+        Card(
+            modifier = Modifier
+                .padding(24.dp)
+                .fillMaxWidth(),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFFFFF3E0))
+        ) {
+            Column(
+                modifier = Modifier.padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    "🛠️ Maintenance Mode",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color(0xFFBF360C)
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    message,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color.Black
+                )
+            }
+        }
+    }
+}
 
 @Composable
 fun FilmNotesContent(navController: NavController, viewModel: FilmNoteViewModel) {

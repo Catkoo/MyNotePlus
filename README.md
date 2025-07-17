@@ -1,52 +1,77 @@
 # 📒 MyNotePlus
 
-MyNotePlus adalah aplikasi Android untuk mencatat catatan pribadi dan daftar film/drama yang telah ditonton. Dibangun dengan Jetpack Compose dan Firebase Firestore.
+**MyNotePlus** adalah aplikasi Android untuk mencatat catatan pribadi dan daftar film/drama favorit. Dibangun dengan **Jetpack Compose** dan **Firebase**, aplikasi ini fokus pada kemudahan pencatatan dan pengalaman pengguna modern.
 
 ---
 
 ## ✨ Fitur Utama
 
-- 📌 Catatan Pribadi: tambah, edit, dan hapus catatan
-- 🎬 Film & Drama: lacak judul, tahun, media, episode terakhir, dan status selesai
-- 🔐 Autentikasi Firebase (Login, Register, Reset Password)
-- 🛠️ Mode Maintenance & Force Update via Firestore
-- 📶 Data tersimpan di Firebase Firestore secara realtime
-- 🎨 UI modern dengan Material 3 dan Jetpack Compose
+- 📌 **Catatan Pribadi**  
+  Tambah, edit, hapus catatan harian kamu dengan antarmuka sederhana dan intuitif.
+
+- 🎬 **Catatan Film & Drama**  
+  Lacak judul, tahun rilis, media, episode terakhir yang ditonton, dan status selesai/tidak.
+
+- 🔐 **Autentikasi Firebase**  
+  Registrasi, login, dan reset password menggunakan Firebase Authentication.
+
+- 🔔 **Peringatan Update Versi**  
+  Notifikasi di layar utama saat ada versi terbaru (opsional, bisa ditutup sementara per sesi).
+
+- 🔄 **Data Real-Time dengan Firestore**  
+  Semua catatan tersimpan langsung di Firebase Firestore dan tersinkron otomatis.
+
+- 🎨 **Desain Modern**  
+  Menggunakan Material You (Material 3) dan Jetpack Compose, antarmuka bersih dan responsif.
 
 ---
 
 ## 🧱 Teknologi yang Digunakan
 
-- Kotlin + Jetpack Compose
-- Firebase Authentication
-- Firebase Firestore
-- Android Studio / Gradle
-- Navigation Compose
-- Material 3 (M3)
+- [Kotlin](https://kotlinlang.org/)
+- [Jetpack Compose](https://developer.android.com/jetpack/compose)
+- [Firebase Authentication](https://firebase.google.com/products/auth)
+- [Firebase Firestore](https://firebase.google.com/products/firestore)
+- [Navigation Compose](https://developer.android.com/jetpack/compose/navigation)
+- [Material 3](https://m3.material.io/)
 
 ---
 
 ## 📷 Tampilan (Screenshots)
 
-> *[Tambahkan gambar UI nanti di sini]*  
-> Bisa pakai: `![Screenshot](link_gambar)`
+> *(Screenshots akan ditambahkan di sini)*  
+> Gunakan format seperti berikut saat tersedia:  
+> `Segera Hadir`
 
 ---
 
-## 🧪 Fitur yang Akan Datang
+## 📱 Link Aplikasi
 
-- Sinkronisasi data offline
-- Mode Admin untuk ubah `app_config`
-- Keamanan lebih lanjut untuk data sensitif
-- Multi-user dengan role
+Kamu bisa mencoba atau mendownload aplikasi MyNotePlus melalui tautan berikut:
+
+- 🔗
+- 📦 [Download APK](Comingsoon)
+> *Pastikan selalu menggunakan versi terbaru untuk mendapatkan fitur dan perbaikan bug terbaru.*
 
 ---
 
-## 🚀 Cara Menjalankan
+## 🛣️ Roadmap Fitur Berikutnya
 
-1. Clone repo ini:
+- 🔁 **Sinkronisasi Offline** (Firestore offline persistence)
+- 🔑 **Mode Admin** untuk update `app_config` (maintenance & versi)
+- 🧩 **Keamanan Data Tambahan** untuk pengguna
+- 👥 **Dukungan Multi-User & Role Access Control**
+
+---
+
+## 🚀 Cara Menjalankan (Development)
+
+1. Clone repository:
    ```bash
    git clone https://github.com/username/MyNotePlus.git
-    ```
+   cd MyNotePlus
+   ```
+
 👤 Author
 Richard Khoo
+- [Website](https://richard-khoo.vercel.app)

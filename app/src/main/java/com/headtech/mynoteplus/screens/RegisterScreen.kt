@@ -27,7 +27,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 @Composable
 fun RegisterScreen(navController: NavHostController) {
     val context = LocalContext.current
-    val auth = FirebaseAuth.getInstance()
 
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }

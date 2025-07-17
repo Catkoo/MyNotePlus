@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.ui.text.font.FontWeight
 
@@ -89,7 +90,7 @@ fun ProfileScreen(navController: NavController) {
             }
         }
 
-        Divider()
+        HorizontalDivider()
 
         Text("Keamanan", style = MaterialTheme.typography.titleSmall)
 
@@ -128,7 +129,7 @@ fun ProfileScreen(navController: NavController) {
                 contentColor = MaterialTheme.colorScheme.error
             )
         ) {
-            Icon(Icons.Default.Logout, contentDescription = "Logout")
+            Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = "Logout")
             Spacer(modifier = Modifier.width(8.dp))
             Text("Logout")
         }
@@ -141,7 +142,7 @@ fun ProfileScreen(navController: NavController) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Versi 0.1",
+                text = "Versi 1.0",
                 style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold)
             )
         }

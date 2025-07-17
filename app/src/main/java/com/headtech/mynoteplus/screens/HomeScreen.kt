@@ -1,5 +1,9 @@
 package com.headtech.mynoteplus.screens
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -11,20 +15,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.google.firebase.auth.FirebaseAuth
 import com.headtech.mynoteplus.viewmodel.FilmNoteViewModel
 import com.headtech.mynoteplus.viewmodel.NoteViewModel
-import android.widget.Toast
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import com.headtech.mynoteplus.model.Note
-import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 
 
@@ -34,14 +30,26 @@ fun HomeScreen(
     noteViewModel: NoteViewModel,
     filmNoteViewModel: FilmNoteViewModel
 ) {
-    var selectedBottomTab by remember { mutableStateOf(0) } // 0 = Home, 1 = Profil
-    var selectedNoteTab by remember { mutableStateOf(0) } // 0 = Pribadi, 1 = Film
+    var selectedBottomTab by remember { mutableStateOf(0) }
+    var selectedNoteTab by remember { mutableStateOf(0) }
+
+    val context = LocalContext.current
+    val prefs = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+
+    val currentVersion = "1.0"
+    var showBanner by remember { mutableStateOf(false) }
+    var updateUrl by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
-        val user = FirebaseAuth.getInstance().currentUser
-        if (user != null) {
-            noteViewModel.startNoteListener()
-            filmNoteViewModel.startFilmNoteListener()
+        val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
+        db.collection("app_config").document("status").get().addOnSuccessListener { doc ->
+            val latestVersion = doc.getString("latest_version") ?: currentVersion
+            val url = doc.getString("update_url") ?: ""
+
+            if (latestVersion != currentVersion) {
+                showBanner = true
+                updateUrl = url
+            }
         }
     }
 
@@ -81,7 +89,6 @@ fun HomeScreen(
         Column(modifier = Modifier.padding(innerPadding)) {
             when (selectedBottomTab) {
                 0 -> {
-                    // Home Tab dengan sub-tab pribadi/film
                     TabRow(selectedTabIndex = selectedNoteTab) {
                         Tab(selected = selectedNoteTab == 0, onClick = { selectedNoteTab = 0 }) {
                             Text("Pribadi")
@@ -97,10 +104,17 @@ fun HomeScreen(
                 }
 
                 1 -> {
-                    // Profil Screen tampil di sini
                     ProfileScreen(navController = navController)
                 }
             }
+        }
+
+        if (showBanner) {
+            Banner(
+                message = "📢 Versi terbaru tersedia. Tap untuk update!",
+                url = updateUrl,
+                onClose = { showBanner = false }
+            )
         }
     }
 }
@@ -108,7 +122,6 @@ fun HomeScreen(
 @Composable
 fun PersonalNotesContent(navController: NavController, noteViewModel: NoteViewModel) {
     val notes = noteViewModel.notes
-    val context = LocalContext.current
 
     Column(modifier = Modifier.padding(16.dp)) {
         if (notes.isEmpty()) {
@@ -136,6 +149,54 @@ fun PersonalNotesContent(navController: NavController, noteViewModel: NoteViewMo
         }
     }
 }
+@Composable
+fun Banner(message: String, url: String, onClose: () -> Unit) {
+    val context = LocalContext.current
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black.copy(alpha = 0.5f)),
+        contentAlignment = Alignment.Center
+    ) {
+        Card(
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+            elevation = CardDefaults.cardElevation(8.dp),
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .wrapContentHeight()
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = message,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    TextButton(
+                        onClick = {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                            context.startActivity(intent)
+                        }
+                    ) {
+                        Text("Update Sekarang")
+                    }
+                    TextButton(onClick = onClose) {
+                        Text("Tutup")
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 
 @Composable
 fun FilmNotesContent(navController: NavController, viewModel: FilmNoteViewModel) {
@@ -189,4 +250,5 @@ fun FilmNotesContent(navController: NavController, viewModel: FilmNoteViewModel)
             }
         }
     }
+
 }

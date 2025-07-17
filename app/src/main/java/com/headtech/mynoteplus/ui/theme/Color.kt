@@ -1,4 +1,4 @@
-package com.headtech.mynoteplus.ui.theme
+package com.headtech.myapplication1.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

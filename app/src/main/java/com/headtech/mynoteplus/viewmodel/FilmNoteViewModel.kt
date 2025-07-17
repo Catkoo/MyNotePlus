@@ -11,6 +11,7 @@ class FilmNoteViewModel : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
     private val _filmNotes = mutableStateListOf<FilmNote>()
     val filmNotes: List<FilmNote> get() = _filmNotes
+    private var isListening = false
 
     fun addFilmNote(note: FilmNote) {
         val id = if (note.id.isBlank()) UUID.randomUUID().toString() else note.id
@@ -50,6 +51,9 @@ class FilmNoteViewModel : ViewModel() {
     }
 
     fun startFilmNoteListener() {
+        if (isListening) return
+        isListening = true
+
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
         db.collection("users").document(uid)
             .collection("film_notes")
@@ -59,12 +63,9 @@ class FilmNoteViewModel : ViewModel() {
                 _filmNotes.clear()
                 for (doc in snapshot.documents) {
                     val film = doc.toObject(FilmNote::class.java)
-
-                    // 🔍 Tambahkan ini untuk debug di Logcat
-                    println("🔥 ${film?.title} -> isFinished: ${film?.isFinished}")
-
                     film?.let { _filmNotes.add(it) }
                 }
             }
     }
+
 }

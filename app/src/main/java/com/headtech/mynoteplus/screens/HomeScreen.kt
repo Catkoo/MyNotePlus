@@ -45,6 +45,8 @@ fun HomeScreen(
     // Ambil data dari Firebase
     LaunchedEffect(Unit) {
         val db = FirebaseFirestore.getInstance()
+        noteViewModel.startNoteListener()
+        filmNoteViewModel.startFilmNoteListener()
         db.collection("app_config").document("status").get().addOnSuccessListener { doc ->
             val latestVersion = doc.getString("latest_version") ?: currentVersion
             val url = doc.getString("update_url") ?: ""
